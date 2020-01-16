@@ -1,0 +1,1 @@
+from crayon.static_functions import StaticFunctions
