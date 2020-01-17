@@ -7,6 +7,13 @@ import discord
 class StaticFunctions:
     @staticmethod
     async def temp_message(content: str, channel: discord.TextChannel, seconds: int):
+        """
+
+        :param content:
+        :param channel:
+        :param seconds:
+        :return:
+        """
         message: discord.Message = await channel.send(content)
         await message.delete(delay=seconds)
 

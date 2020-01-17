@@ -9,13 +9,11 @@ from secrets import token
 
 client = discord.Client()
 
-
 db = pymysql.connect(host='localhost',
                      port=3306,
                      user='root',
                      password='',
                      db='crayon')
-
 
 
 @client.event
@@ -29,6 +27,10 @@ async def on_message(message: discord.Message):
     if str(channel.type) != 'private':
         member: discord.Member = message.author
         user: discord.User = await client.fetch_user(member.id)
+        print(crayon.DB.call_procedure("CALL check_register({channelid}, {serverid});".format(
+            serverid=guild.id,
+            channelid=channel.id
+        )))
         if not user.bot:
 
             with db.cursor() as db_cursor:  # SQL Pointer
@@ -49,7 +51,19 @@ async def on_message(message: discord.Message):
                         action = int(value[0])
 
                 # await crayon.StaticFunctions.contains_external_invite(content, guild)
-                print(action)
+                result = eval(str(crayon.DB.execute_query(
+                    "SELECT is_special_channel_user({channelid}, {userid}) AS special;".format(
+                        channelid=channel.id,
+                        userid=user.id
+                    )
+                )))[0][0]
+
+                if result == "ignore":
+                    pass
+                elif str(result) == "forbidden":
+                    await message.delete()
+                else:
+                    await crayon.ModuleFunctions.verification(message, client)
 
     if content.lower() == 'creeper':
         if channel.id != 561997180638986242:
