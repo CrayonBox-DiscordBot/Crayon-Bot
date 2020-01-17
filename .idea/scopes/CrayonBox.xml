@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="CrayonBox" pattern="file[Crayon-Bot]:crayon//*||file:bot.py" />
+</component>

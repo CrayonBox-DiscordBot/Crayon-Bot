@@ -1,3 +1,6 @@
+#  Copyright (c) 2020.
+#  All rights lies to "VukAnd12#4407" and "Gravity Assist#0852"
+
 import discord
 import pymysql
 import crayon
@@ -27,6 +30,7 @@ async def on_message(message: discord.Message):
         member: discord.Member = message.author
         user: discord.User = await client.fetch_user(member.id)
         if not user.bot:
+
             with db.cursor() as db_cursor:  # SQL Pointer
                 db_cursor.execute('SELECT get_server_prefix({id}) AS prefix;'.format(id=str(guild.id)))
                 for value in db_cursor:
@@ -38,11 +42,13 @@ async def on_message(message: discord.Message):
 
                 action: int = 0
                 with db.cursor() as db_cursor:  # SQL Pointer
-                    db_cursor.execute("SELECT get_server_command_action({id}, '{command}') AS action;".format(id=str(guild.id), command=command))
+                    db_cursor.execute(
+                        "SELECT get_server_command_action({id}, '{command}') AS action;".format(id=str(guild.id),
+                                                                                                command=command))
                     for value in db_cursor:
                         action = int(value[0])
 
-                await crayon.StaticFunctions.contains_external_invite(content, guild)
+                # await crayon.StaticFunctions.contains_external_invite(content, guild)
                 print(action)
 
     if content.lower() == 'creeper':
