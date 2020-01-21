@@ -1,5 +1,6 @@
 #  Copyright (c) 2020.
 #  All rights lies to "VukAnd12#4407" and "Gravity Assist#0852"
+import time
 
 import discord
 import pymysql
@@ -13,7 +14,19 @@ db = pymysql.connect(host='localhost',
                      port=3306,
                      user='root',
                      password='',
-                     db='crayon')
+                     db='crayon_box')
+
+@client.event
+async def on_ready():
+    print('==========')
+    print(client.user.name + '#' + client.user.discriminator)
+    print(client.user.id)
+    print('https://discordapp.com/oauth2/authorize?client_id=' + str(client.user.id) + '&scope=bot')
+    print('==========')
+
+    while True:
+        crayon.DB.update(client)
+        time.sleep(10)
 
 
 @client.event
@@ -25,45 +38,35 @@ async def on_message(message: discord.Message):
     guild: discord.Guild = message.guild
 
     if str(channel.type) != 'private':
-        member: discord.Member = message.author
-        user: discord.User = await client.fetch_user(member.id)
-        print(crayon.DB.call_procedure("CALL check_register({channelid}, {serverid});".format(
-            serverid=guild.id,
-            channelid=channel.id
-        )))
-        if not user.bot:
+        try:
+            member: discord.Member = message.author
+            user: discord.User = await client.fetch_user(member.id)
 
-            with db.cursor() as db_cursor:  # SQL Pointer
-                db_cursor.execute('SELECT get_server_prefix({id}) AS prefix;'.format(id=str(guild.id)))
-                for value in db_cursor:
-                    prefix = value[0]
+            crayon.DB.check_server_register(guild)
+            for Gchannel in guild.channels:
+                crayon.DB.check_channel_register(Gchannel)
+            crayon.DB.check_channel_register(channel)
 
-            if content.lower().startswith(prefix):
-                args: list = content[len(prefix):].split(' ')
-                command: str = args[0].lower()
+            if not user.bot:
+                prefix = crayon.DB.get_server_prefix(guild)
 
-                action: int = 0
-                with db.cursor() as db_cursor:  # SQL Pointer
-                    db_cursor.execute(
-                        "SELECT get_server_command_action({id}, '{command}') AS action;".format(id=str(guild.id),
-                                                                                                command=command))
-                    for value in db_cursor:
-                        action = int(value[0])
-
-                # await crayon.StaticFunctions.contains_external_invite(content, guild)
-                result = eval(str(crayon.DB.execute_query(
-                    "SELECT is_special_channel_user({channelid}, {userid}) AS special;".format(
-                        channelid=channel.id,
-                        userid=user.id
-                    )
-                )))[0][0]
+                result = crayon.DB.is_special_channel_user(channel, user)
 
                 if result == "ignore":
                     pass
                 elif str(result) == "forbidden":
                     await message.delete()
                 else:
-                    await crayon.ModuleFunctions.verification(message, client)
+                    if int(crayon.DB.channel_use(channel)) == 0:
+                        await crayon.ModuleFunctions.verification(message, client)
+
+                    if content.lower().startswith(prefix):
+                        args: list = content[len(prefix):].split(' ')
+                        command: str = args[0].lower()
+                        action: int = 0
+                        # await crayon.StaticFunctions.contains_external_invite(content, guild)
+        except:
+            pass
 
     if content.lower() == 'creeper':
         if channel.id != 561997180638986242:
