@@ -16,6 +16,7 @@ db = pymysql.connect(host='localhost',
                      password='',
                      db='crayon_box')
 
+
 @client.event
 async def on_ready():
     print('==========')
@@ -24,9 +25,9 @@ async def on_ready():
     print('https://discordapp.com/oauth2/authorize?client_id=' + str(client.user.id) + '&scope=bot')
     print('==========')
 
-    while True:
+    """while True:
         crayon.DB.update(client)
-        time.sleep(10)
+        time.sleep(10)"""
 
 
 @client.event
@@ -37,36 +38,34 @@ async def on_message(message: discord.Message):
     content: str = message.content
     guild: discord.Guild = message.guild
 
+
     if str(channel.type) != 'private':
-        try:
-            member: discord.Member = message.author
-            user: discord.User = await client.fetch_user(member.id)
+        member: discord.Member = message.author
+        user: discord.User = await client.fetch_user(member.id)
 
-            crayon.DB.check_server_register(guild)
-            for Gchannel in guild.channels:
-                crayon.DB.check_channel_register(Gchannel)
-            crayon.DB.check_channel_register(channel)
+        crayon.DB.check_server_register(guild)
+        crayon.DB.check_channel_register(channel)
 
-            if not user.bot:
-                prefix = crayon.DB.get_server_prefix(guild)
+        if not user.bot:
+            prefix = crayon.DB.get_server_prefix(guild)
 
-                result = crayon.DB.is_special_channel_user(channel, user)
+            result = crayon.DB.is_special_channel_user(channel, user)
 
-                if result == "ignore":
-                    pass
-                elif str(result) == "forbidden":
-                    await message.delete()
-                else:
-                    if int(crayon.DB.channel_use(channel)) == 0:
-                        await crayon.ModuleFunctions.verification(message, client)
+            # await crayon.ModuleFunctions.verification(message, client)
 
-                    if content.lower().startswith(prefix):
-                        args: list = content[len(prefix):].split(' ')
-                        command: str = args[0].lower()
-                        action: int = 0
-                        # await crayon.StaticFunctions.contains_external_invite(content, guild)
-        except:
-            pass
+            if result == "ignore":
+                pass
+            elif str(result) == "forbidden":
+                await message.delete()
+            else:
+                if int(crayon.DB.channel_use(channel)) == 0:
+                    await crayon.ModuleFunctions.verification(message, client)
+
+                if content.lower().startswith(prefix):
+                    args: list = content[len(prefix):].split(' ')
+                    command: str = args[0].lower()
+                    action: int = 0
+                    # await crayon.StaticFunctions.contains_external_invite(content, guild)
 
     if content.lower() == 'creeper':
         if channel.id != 561997180638986242:

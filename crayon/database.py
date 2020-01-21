@@ -107,14 +107,54 @@ class __Database:
     def is_special_channel_user(self, channel: discord.TextChannel, user: discord.User):
         cursor = self.__db.cursor()
         cursor.execute(
-            "SELECT special_type FROM channel_special_users WHERE channel_ID = {channelid} AND user_ID = {userid};"
-                .format(channelid=channel.id, userid=user.id))
+            "SELECT special_type FROM channel_special_users WHERE channel_ID = {channelid} AND user_ID = {userid};".format(
+                channelid=channel.id, userid=user.id))
         self.__db.commit()
         rows = cursor.fetchall()
         cursor.close()
         self.__db.commit()
         if len(rows) == 0:
             return ""
+        else:
+            return rows[0][0]
+
+    def is_verification_phrase_correct(self, channel: discord.TextChannel, content: str):
+        cursor = self.__db.cursor()
+        cursor.execute(
+            "SELECT COUNT(channel_ID) FROM channel_verification WHERE channel_ID = {channelid} AND phrase_ID = (SELECT phraseID FROM phrase WHERE phrase = '{phrase}');".format(
+                channelid=channel.id, phrase=content))
+        self.__db.commit()
+        rows = cursor.fetchall()
+        cursor.close()
+        self.__db.commit()
+        return rows[0][0]
+
+    def verification_roles(self, channel: discord.TextChannel):
+        cursor = self.__db.cursor()
+        cursor.execute("SELECT role_action, role_ID FROM channel_verification WHERE channel_ID = {channelid};".format(
+            channelid=channel.id))
+        self.__db.commit()
+        rows = cursor.fetchall()
+        cursor.close()
+        self.__db.commit()
+
+        roles = {"add": [], "remove": []}
+        for entry in rows:
+            roles[entry[0]].append(entry[1])
+
+        return roles
+
+    def get_verification_log_channel(self, server: discord.Guild):
+        cursor = self.__db.cursor()
+        cursor.execute("SELECT verification_log_channel_ID FROM server_log WHERE server_ID = {serverid};".format(
+            serverid=server.id))
+        self.__db.commit()
+        rows = cursor.fetchall()
+        cursor.close()
+        self.__db.commit()
+
+        if len(rows) == 0:
+            return 0
         else:
             return rows[0][0]
 

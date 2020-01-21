@@ -6,25 +6,25 @@ import datetime
 
 
 class StaticEmbeds:
-    __trial_mod_color: str = "#C8D5EE"
-    __wrong_verify_color: str = "#FF0000"
-    __not_allowed_character_color: str = "#FF0000"
-    __no_discord_invite_color: str = "#FF0000"
-    __welcome_message_color: str = "#00FF00"
-    __vote_color: str = "#0000FF"
+    __trial_mod_color: str = 0xC8D5EE
+    __wrong_verify_color: str = 0xFF0000
+    __not_allowed_character_color: str = 0xFF0000
+    __no_discord_invite_color: str = 0xFF0000
+    __welcome_message_color: str = 0x00FF00
+    __vote_color: str = 0x0000FF
 
     __feature_colors = {
-        "Requested": "#707070",
-        "Accepted": "#00FFBB",
-        "Rejected": "#B30000",
-        "Closed": "#44FF00"
+        "Requested": 0x707070,
+        "Accepted": 0x00FFBB,
+        "Rejected": 0xB30000,
+        "Closed": 0x44FF00
 
     }
 
     __giveaway_drop_colors = {
-        "dropped": "#D0A33E",
-        "claimed": "#D000BC",
-        "closed": "#8EA5D0"
+        "dropped": 0xD0A33E,
+        "claimed": 0xD000BC,
+        "closed": 0x8EA5D0
     }
 
     @staticmethod
@@ -46,7 +46,7 @@ class StaticEmbeds:
             name=mod.name,
             icon_url=mod.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(
             text="For {trial_name}, made by Gravity Assist#0852".format(
                 trial_name=new_trial_mod.name
@@ -68,7 +68,7 @@ class StaticEmbeds:
             )
         )
         embed.colour = StaticEmbeds.__trial_mod_color
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0852")
 
         return embed
@@ -92,7 +92,7 @@ class StaticEmbeds:
             name="Verification System",
             icon_url="https://b.thumbs.redditmedia.com/OIDktcKCqI8n4CnTj2SNZAQtXjBWxo9Qah6ku96YsME.png"
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(
             text="For {user_name}, made by Gravity Assist#0852".format(
                 user_name=user.name
@@ -120,7 +120,7 @@ class StaticEmbeds:
         embed.set_image(
             url="https://media.tenor.com/images/002ad9767dabb97d0dfcc0300ad95da7/tenor.gif"
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(
             text="For {user_name}, made by Gravity Assist#0853".format(
                 user_name=user.name
@@ -144,7 +144,7 @@ class StaticEmbeds:
         embed.set_image(
             url="https://cdn.discordapp.com/attachments/649636894807949352/667656108659179520/animated_discord_logo.gif"
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(
             text="For {user_name}, made by Gravity Assist#0853".format(
                 user_name=user.name
@@ -168,7 +168,7 @@ class StaticEmbeds:
             name="Join Message",
             icon_url="https://b.thumbs.redditmedia.com/OIDktcKCqI8n4CnTj2SNZAQtXjBWxo9Qah6ku96YsME.png"
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         return embed
@@ -192,7 +192,7 @@ class StaticEmbeds:
             name=str(requester.name + "#" + requester.discriminator),
             icon_url=requester.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Requested Feature", value=feature, inline=False)
@@ -221,7 +221,7 @@ class StaticEmbeds:
             name=str(requester.name + "#" + requester.discriminator),
             icon_url=requester.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Requested Feature", value=feature, inline=False)
@@ -245,7 +245,7 @@ class StaticEmbeds:
             name=str(dropped_by.name + "#" + dropped_by.discriminator),
             icon_url=dropped_by.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Prize", value=prize, inline=False)
@@ -273,7 +273,7 @@ class StaticEmbeds:
             name=str(dropped_by.name + "#" + dropped_by.discriminator),
             icon_url=dropped_by.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Prize", value=prize, inline=False)
@@ -300,7 +300,7 @@ class StaticEmbeds:
             name=str(dropped_by.name + "#" + dropped_by.discriminator),
             icon_url=dropped_by.avatar_url
         )
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Prize", value=prize, inline=False)
@@ -324,7 +324,7 @@ class StaticEmbeds:
         embed: discord.Embed = discord.Embed(title="Vote")
         embed.colour = StaticEmbeds.__vote_color
         embed.set_author(name=str(creator.name + "#" + creator.discriminator), icon_url=creator.avatar_url)
-        embed.timestamp = datetime.datetime.timestamp(datetime.datetime.now())
+        embed.timestamp = datetime.datetime.now()
         embed.set_footer(text="Made by Gravity Assist#0853")
 
         embed.add_field(name="Question", value=vote_question, inline=False)

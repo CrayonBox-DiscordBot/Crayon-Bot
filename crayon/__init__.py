@@ -3,6 +3,7 @@
 
 from crayon.static_functions import StaticFunctions
 from crayon.module_functions import ModuleFunctions
+from crayon.static_embeds import StaticEmbeds
 from crayon.database import __Database
 
 
